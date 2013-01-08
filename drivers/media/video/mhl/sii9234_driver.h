@@ -34,6 +34,10 @@
 #define __CONFIG_TMDS_OFFON_WORKAROUND__
 #endif
 
+#ifndef __CONFIG_USE_TIMER__
+#define __CONFIG_USE_TIMER__
+#endif
+
 #ifndef CONFIG_SII9234_RCP
 #define CONFIG_SII9234_RCP		1
 #include <linux/input.h>
@@ -370,6 +374,11 @@
 #define	INTR_CBUS1_DESIRED_MASK		(BIT2 | BIT3 | BIT4 | BIT5 | BIT6)
 #define	INTR_CBUS2_DESIRED_MASK		(BIT2 | BIT3) /* (BIT0| BIT2 | BIT3) */
 
+enum hpd_state {
+	LOW = 0,
+	HIGH
+};
+
 enum page_num {
 	PAGE0 = 0,
 	PAGE1,
@@ -533,7 +542,9 @@ struct sii9234_data {
 #ifdef __CONFIG_TMDS_OFFON_WORKAROUND__
 	struct work_struct		tmds_offon_work;
 #endif
+#ifdef __CONFIG_USE_TIMER__
 	struct timer_list		cbus_command_timer;
+#endif
 #ifdef CONFIG_MACH_MIDAS
 	struct wake_lock		mhl_wake_lock;
 #endif
